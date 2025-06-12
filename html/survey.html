@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연금 계산기</title>
+    <link rel="stylesheet" href="css/survey.css">
+</head>
+<body>
+    <!-- 상단 진행바 -->
+    <div class="top-progress-container">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">1 / 15</div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="steps-button">
+                    <span>전체 단계 보기</span>
+                    <div class="steps-popup">
+                        <div class="popup-header">
+                            <div class="popup-title">설문 단계</div>
+                            <div class="popup-subtitle">클릭하여 해당 단계로 이동</div>
+                        </div>
+                        <div class="step-list" id="stepList">
+                            <!-- 단계별 목록이 JavaScript로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+                <button class="reset-button" id="resetButton">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                    처음부터
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 수명 계산기 모달 -->
+    <div class="life-calculator-modal" id="lifeCalculatorModal">
+        <div class="life-calculator-content" id="calculatorContent">
+            <!-- 건강 설문 화면 -->
+            <div id="healthSurvey">
+                <div class="calculator-header">
+                    <h2 class="calculator-title">건강 설문을 통한 기대수명 예측</h2>
+                    <p class="calculator-subtitle">기본 정보와 건강 정보를 입력하시면 보다 정확한 기대수명을 예측해드립니다.</p>
+                </div>
+
+                <!-- 기본 정보 섹션 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">기본 정보</h3>
+                    
+                    <div class="calculator-field">
+                        <label class="field-label">성별</label>
+                        <div class="radio-group" id="genderGroup">
+                            <div class="radio-item" data-value="남성">
+                                <input type="radio" name="gender" value="남성" id="gender1">
+                                <label for="gender1">남성</label>
+                            </div>
+                            <div class="radio-item" data-value="여성">
+                                <input type="radio" name="gender" value="여성" id="gender2">
+                                <label for="gender2">여성</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calculator-field">
+                        <label class="field-label">태어난 연도</label>
+                        <input type="number" class="calculator-input" id="birthYear" placeholder="예: 1985" min="1920" max="2010">
+                    </div>
+
+                    <div class="calculator-field">
+                        <label class="field-label">거주 지역</label>
+                        <select class="calculator-input" id="region" title="거주 지역 선택">
+                            <option value="">지역을 선택해주세요</option>
+                            <option value="서울">서울특별시</option>
+                            <option value="부산">부산광역시</option>
+                            <option value="대구">대구광역시</option>
+                            <option value="인천">인천광역시</option>
+                            <option value="광주">광주광역시</option>
+                            <option value="대전">대전광역시</option>
+                            <option value="울산">울산광역시</option>
+                            <option value="세종">세종특별자치시</option>
+                            <option value="경기">경기도</option>
+                            <option value="강원">강원도</option>
+                            <option value="충북">충청북도</option>
+                            <coption value="충남">충청남도</coption>
+                            <option value="전북">전라북도</option>
+                            <option value="전남">전라남도</option>
+                            <option value="경북">경상북도</option>
+                            <option value="경남">경상남도</option>
+                            <option value="제주">제주특별자치도</option>
+                        </select>
+                    </div>
+
+                    <div class="calculator-field">
+                        <label class="field-label">
+                            소득 수준 (보험료 기준)
+                            <div class="tooltip-icon-calc">
+                                ?
+                                <div class="tooltip-content-calc">
+                                    건강보험료를 기준으로 한 소득 분위입니다. 
+                                    1분위(저소득)부터 5분위(고소득)까지 구분됩니다.
+                                    대략적인 가구 소득으로 선택하시면 됩니다.
+                                </div>
+                            </div>
+                        </label>
+                        <div class="radio-group" id="incomeGroup">
+                            <div class="radio-item" data-value="1">
+                                <input type="radio" name="incomeLevel" value="1" id="income1">
+                                <label for="income1">1분위 (월 가구소득 300만원 미만)</label>
+                            </div>
+                            <div class="radio-item" data-value="2">
+                                <input type="radio" name="incomeLevel" value="2" id="income2">
+                                <label for="income2">2분위 (월 가구소득 300-500만원)</label>
+                            </div>
+                            <div class="radio-item" data-value="3">
+                                <input type="radio" name="incomeLevel" value="3" id="income3">
+                                <label for="income3">3분위 (월 가구소득 500-700만원)</label>
+                            </div>
+                            <div class="radio-item" data-value="4">
+                                <input type="radio" name="incomeLevel" value="4" id="income4">
+                                <label for="income4">4분위 (월 가구소득 700-1000만원)</label>
+                            </div>
+                            <div class="radio-item" data-value="5">
+                                <input type="radio" name="incomeLevel" value="5" id="income5">
+                                <label for="income5">5분위 (월 가구소득 1000만원 이상)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. 키와 몸무게 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">
+                        1. 키와 몸무게
+                        <div class="tooltip-icon-calc">
+                            ?
+                            <div class="tooltip-content-calc">
+                                BMI는 체질량지수로, 비만 관련 질환 위험도를 반영하기 위해 사용됩니다. 
+                                BMI = 체중(kg) / [키(m)]² 입니다. 
+                                예: 170cm, 70kg인 경우 BMI = 70 / 1.7² = 24.2
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="input-group">
+                        <div class="calculator-field">
+                            <label class="field-label">키 (cm)</label>
+                            <input type="number" class="calculator-input" id="height" placeholder="예: 170">
+                        </div>
+                        <div class="calculator-field">
+                            <label class="field-label">몸무게 (kg)</label>
+                            <input type="number" class="calculator-input" id="weight" placeholder="예: 70">
+                        </div>
+                    </div>
+                    <div id="bmiResult" class="bmi-result" style="display: none;"></div>
+                </div>
+
+                <!-- 2. 흡연 여부 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">
+                        2. 흡연 여부
+                        <div class="tooltip-icon-calc">
+                            ?
+                            <div class="tooltip-content-calc">
+                                흡연은 폐 질환과 심혈관계 질환 위험을 증가시켜 수명에 큰 영향을 줍니다.
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="radio-group" id="smokingGroup">
+                        <div class="radio-item" data-value="비흡연">
+                            <input type="radio" name="smoking" value="비흡연" id="smoking1">
+                            <label for="smoking1">비흡연자</label>
+                        </div>
+                        <div class="radio-item" data-value="과거흡연">
+                            <input type="radio" name="smoking" value="과거흡연" id="smoking2">
+                            <label for="smoking2">과거 흡연자 (현재는 금연 중, 5년 이상)</label>
+                        </div>
+                        <div class="radio-item" data-value="현재흡연">
+                            <input type="radio" name="smoking" value="현재흡연" id="smoking3">
+                            <label for="smoking3">현재 흡연자 (하루 1갑 이상, 20년 이상)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 혈압 상태 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">
+                        3. 혈압 상태
+                        <div class="tooltip-icon-calc">
+                            ?
+                            <div class="tooltip-content-calc">
+                                혈압이 높을수록 뇌졸중, 심장질환 등의 위험이 증가합니다.
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="radio-group" id="bloodPressureGroup">
+                        <div class="radio-item" data-value="정상">
+                            <input type="radio" name="bloodPressure" value="정상" id="bp1">
+                            <label for="bp1">정상 (수축기 혈압 < 140mmHg)</label>
+                        </div>
+                        <div class="radio-item" data-value="stage1">
+                            <input type="radio" name="bloodPressure" value="stage1" id="bp2">
+                            <label for="bp2">경도 고혈압 (140–159mmHg)</label>
+                        </div>
+                        <div class="radio-item" data-value="stage2">
+                            <input type="radio" name="bloodPressure" value="stage2" id="bp3">
+                            <label for="bp3">중증 고혈압 (160mmHg 이상)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 당뇨 상태 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">
+                        4. 당뇨 상태 (HbA1c 기준)
+                        <div class="tooltip-icon-calc">
+                            ?
+                            <div class="tooltip-content-calc">
+                                혈당이 높을수록 장기 손상과 합병증 위험이 커져 수명이 줄어듭니다.
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="radio-group" id="diabetesGroup">
+                        <div class="radio-item" data-value="정상">
+                            <input type="radio" name="diabetes" value="정상" id="diabetes1">
+                            <label for="diabetes1">정상 (≤5.6%)</label>
+                        </div>
+                        <div class="radio-item" data-value="전당뇨">
+                            <input type="radio" name="diabetes" value="전당뇨" id="diabetes2">
+                            <label for="diabetes2">전당뇨 (5.7–6.4%)</label>
+                        </div>
+                        <div class="radio-item" data-value="당뇨">
+                            <input type="radio" name="diabetes" value="당뇨" id="diabetes3">
+                            <label for="diabetes3">진단받은 당뇨 (6.5–7.9%)</label>
+                        </div>
+                        <div class="radio-item" data-value="고위험당뇨">
+                            <input type="radio" name="diabetes" value="고위험당뇨" id="diabetes4">
+                            <label for="diabetes4">고위험 당뇨 (≥8.0%)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 음주 빈도 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">
+                        5. 음주 빈도
+                        <div class="tooltip-icon-calc">
+                            ?
+                            <div class="tooltip-content-calc">
+                                고위험 음주는 간질환, 고혈압, 사고 위험을 증가시킵니다.
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="radio-group" id="drinkingGroup">
+                        <div class="radio-item" data-value="안함">
+                            <input type="radio" name="drinking" value="안함" id="drinking1">
+                            <label for="drinking1">음주 안 함</label>
+                        </div>
+                        <div class="radio-item" data-value="보통">
+                            <input type="radio" name="drinking" value="보통" id="drinking2">
+                            <label for="drinking2">보통 음주 (주 1,2 회)</label>
+                        </div>
+                        <div class="radio-item" data-value="고위험">
+                            <input type="radio" name="drinking" value="고위험" id="drinking3">
+                            <label for="drinking3">고위험 음주 (주 3회 이상)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 운동 빈도 -->
+                <div class="calculator-section">
+                    <h3 class="section-title">
+                        6. 운동 빈도
+                        <div class="tooltip-icon-calc">
+                            ?
+                            <div class="tooltip-content-calc">
+                                꾸준한 운동은 체중, 혈압, 당뇨 조절에 도움이 되어 기대수명을 연장시킵니다.
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="radio-group" id="exerciseGroup">
+                        <div class="radio-item" data-value="규칙적">
+                            <input type="radio" name="exercise" value="규칙적" id="exercise1">
+                            <label for="exercise1">규칙적인 운동 (주 3회 이상, 회당 30분 이상 유산소)</label>
+                        </div>
+                        <div class="radio-item" data-value="가끔">
+                            <input type="radio" name="exercise" value="가끔" id="exercise2">
+                            <label for="exercise2">가끔 운동 (주 1~2회)</label>
+                        </div>
+                        <div class="radio-item" data-value="안함">
+                            <input type="radio" name="exercise" value="안함" id="exercise3">
+                            <label for="exercise3">전혀 운동 안 함</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-buttons">
+                    <button class="calc-btn calc-btn-cancel" onclick="closeLifeCalculator()">취소</button>
+                    <div class="calculation-buttons-with-info">
+                        <button class="calc-btn calc-btn-calculate" onclick="calculateLifeExpectancy()">예측 수명 계산하기</button>
+                        <button class="info-toggle-btn" id="infoToggleBtn" onclick="toggleCalculationInfo()">?</button>
+                    </div>
+                </div>
+
+                <!-- 계산 방식 설명 -->
+                <div class="calculation-explanation" id="calculationExplanation">
+                    <div class="explanation-section">
+                        <h4>🔬 수명 예측은 어떻게 계산되나요?</h4>
+                        <p>이 시스템은 과학적 근거에 기반하여 3단계로 수명을 예측합니다.</p>
+                    </div>
+
+                    <div class="explanation-section">
+                        <h4>📊 1단계: 기본 기대수명</h4>
+                        <p>국민건강보험공단에서 발표한 <strong>2023년 지역별・성별・소득분위별 기대수명 데이터</strong>를 바탕으로 출발점을 설정합니다.</p>
+                        <ul class="explanation-list">
+                            <li><strong>지역:</strong> 서울, 경기, 강원 등 17개 시도별로 다른 수명</li>
+                            <li><strong>성별:</strong> 남성과 여성의 생물학적 차이 반영</li>
+                            <li><strong>소득:</strong> 1~5분위로 나뉜 경제적 여건의 건강 영향</li>
+                        </ul>
+                    </div>
+
+                    <div class="explanation-section">
+                        <h4>📈 2단계: 의료 발전 효과</h4>
+                        <p>의료 기술 발전으로 인한 <strong>기대수명 연장 효과</strong>를 반영합니다.</p>
+                        <ul class="explanation-list">
+                            <li>매년 남성 0.18세, 여성 0.16세씩 수명 연장</li>
+                            <li>암 치료, 심장 수술, 신약 개발 등의 의학 발전 반영</li>
+                            <li>현재 연령대가 미래에 받을 의료 혜택까지 고려</li>
+                        </ul>
+                    </div>
+
+                    <div class="explanation-section">
+                        <h4>⚠️ 3단계: 개인 건강 위험 요인</h4>
+                        <p>국제 의학 논문에서 입증된 <strong>위험 요인별 수명 손실</strong>을 차감합니다.</p>
+                        <ul class="explanation-list">
+                            <li><strong>흡연:</strong> 현재 흡연자는 약 4.1년 감소 (JAMA 2015)</li>
+                            <li><strong>고혈압:</strong> 중증 고혈압은 약 2.3년 감소 (Hypertension 2014)</li>
+                            <li><strong>비만:</strong> BMI 35 이상은 약 3.0년 감소 (BMJ 2016)</li>
+                            <li><strong>당뇨:</strong> 고위험 당뇨는 약 6.5년 감소 (Lancet 2010)</li>
+                            <li><strong>음주:</strong> 고위험 음주는 약 3.5년 감소 (Lancet 2018)</li>
+                            <li><strong>운동 부족:</strong> 약 2.0년 감소 (WHO 2020)</li>
+                        </ul>
+                    </div>
+
+                    <div class="explanation-section">
+                        <h4>🧮 최종 계산 공식</h4>
+                        <p style="background: #e5e7eb; padding: 0.8rem; border-radius: 6px; font-family: monospace; text-align: center; color: #1f2937; font-weight: 600;">
+                            예측 수명 = 기본 기대수명 + 의료발전 증가분 - 위험요인 손실
+                        </p>
+                        <p><strong>예시:</strong> 40세 서울 거주 남성 (중간소득, 흡연자, 운동부족)의 경우<br>
+                        → 81.1세 (기본) + 0.4세 (의료발전) - 6.1세 (위험요인) = <strong>75.4세</strong></p>
+                    </div>
+
+                    <div class="explanation-section">
+                        <h4>📝 주의사항</h4>
+                        <p>이 예측은 <strong>통계적 추정</strong>이며, 개인의 실제 수명을 보장하지 않습니다. 유전적 요인, 돌발적 질병, 사고 등은 반영되지 않으므로 참고용으로만 활용해주세요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 결과 화면 -->
+            <div id="resultScreen" style="display: none;">
+                <div class="result-icon">🎯</div>
+                <h2 class="result-title">예측 결과</h2>
+                <div class="result-age" id="predictedAge">78.3</div>
+                <p class="result-message">예상 기대수명은 <span id="ageText">78.3</span>세입니다.</p>
+                
+                <div class="result-explanation">
+                    <div class="explanation-title">
+                        <span>📊</span>
+                        수명은 어떻게 계산되나요?
+                    </div>
+                    <div class="explanation-content">
+                        이 수명 예측은 국가 통계 및 국제 의학 논문에 기반한 시뮬레이션 결과입니다. 
+                        사용자의 지역, 성별, 소득 수준에 따른 기본 기대수명에서 
+                        건강 위험 요인으로 인한 기대수명 손실을 계산하여 산출됩니다.
+                        <br><br>
+                        <strong>기본 수명:</strong> 국민건강보험공단 지역별 기대수명 지표 (2023년 기준)<br>
+                        <strong>위험 요인:</strong> 흡연, 고혈압, 비만, 당뇨, 음주, 운동 부족 등의 HR(Hazard Ratio) 기반 손실 계산
+                    </div>
+                </div>
+
+                <button class="calc-btn-apply" onclick="applyLifeExpectancy()">이 수명값 적용하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 리셋 확인 모달 -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+            </div>
+            <h3 class="modal-title">처음부터 다시 시작</h3>
+            <p class="modal-message">
+                정말로 처음부터 다시 시작하시겠습니까?<br>
+                <strong>입력하신 모든 데이터가 삭제됩니다.</strong>
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="closeResetModal()">
+                    취소
+                </button>
+                <button class="modal-btn modal-btn-confirm" onclick="confirmReset()">
+                    처음부터 시작
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+        <!-- 로고 -->
+        <div class="floating-logo">
+            <img src="../images/ygss_logo.png" alt="YGSS Logo">
+        </div>
+
+        <div class="form-container">
+            <h1 class="form-title" id="formTitle">닉네임</h1>
+            <p class="form-subtitle" id="formSubtitle">설문을 시작하기 전에, 이름이나 닉네임을 입력해 주세요.<br>실명이 아니어도 괜찮습니다.</p>
+            
+            <div class="form-group" id="formGroup">
+                <!-- 폼 필드가 JavaScript로 생성됩니다 -->
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev-btn" id="prevBtn" onclick="previousStep()" disabled type="button" title="이전 단계">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
+
+                <button class="unknown-btn" id="unknownBtn" onclick="selectUnknown()" style="display: none;" type="button">
+                    잘 모르겠어요
+                </button>
+
+                <button class="nav-btn next-btn" id="nextBtn" onclick="nextStep()" type="button" title="다음 단계">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/survey.js"></script>
+</body>
+</html> 

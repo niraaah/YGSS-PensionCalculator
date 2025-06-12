@@ -1,0 +1,468 @@
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #4D33E5 0%, #527e66 100%);
+    min-height: 100vh;
+    color: #fff;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* 헤더 */
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #e3f2fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header .subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 결과 카드 */
+.result-card {
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 3rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    color: #2d3748;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.result-card:nth-child(2) { animation-delay: 0.2s; }
+.result-card:nth-child(3) { animation-delay: 0.4s; }
+.result-card:nth-child(4) { animation-delay: 0.6s; }
+.result-card:nth-child(5) { animation-delay: 0.8s; }
+
+.result-main {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.result-amount {
+    font-size: clamp(3rem, 6vw, 4rem);
+    font-weight: 900;
+    color: #4D33E5;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.result-amount .currency {
+    font-size: 0.6em;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.result-description {
+    font-size: 1.3rem;
+    color: #4a5568;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.highlight {
+    color: #4D33E5;
+    font-weight: 700;
+}
+
+.tip-card {
+    background: linear-gradient(135deg, #21c97a 0%, #16a085 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.tip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ffd700, #21c97a, #4D33E5);
+}
+
+.tip-card .icon {
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-size: 1.2em;
+}
+
+/* 다운로드 버튼 */
+.download-btn {
+    background: linear-gradient(135deg, #4D33E5 0%, #6B4CE6 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(77, 51, 229, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 2rem auto;
+}
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(77, 51, 229, 0.4);
+    background: linear-gradient(135deg, #6B4CE6 0%, #4D33E5 100%);
+}
+
+.download-btn:active {
+    transform: translateY(-1px);
+}
+
+/* 차트 컨테이너 */
+.chart-container {
+    position: relative;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 16px;
+}
+
+.chart-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.chart-wrapper {
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+
+/* 간단한 차트 스타일 (Chart.js 대신 CSS로 구현) */
+.simple-chart {
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    height: 300px;
+    padding: 2rem 1rem 1rem;
+    background: white;
+    border-radius: 12px;
+    position: relative;
+}
+
+.chart-bar {
+    width: 60px;
+    background: linear-gradient(180deg, #4D33E5 0%, #21c97a 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-bar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(77, 51, 229, 0.3);
+}
+
+.chart-bar-value {
+    position: absolute;
+    top: -2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4D33E5;
+    white-space: nowrap;
+}
+
+.chart-bar-label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* 라인 차트 스타일 */
+.line-chart {
+    position: relative;
+    height: 300px;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.line-chart svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* 시뮬레이션 테이블 */
+.simulation-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.simulation-table th {
+    background: #4D33E5;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.simulation-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 500;
+}
+
+.simulation-table tr:nth-child(even) td {
+    background: #f8f9fa;
+}
+
+.simulation-table tr:hover td {
+    background: #e3f2fd;
+}
+
+.best-option {
+    background: linear-gradient(135deg, #21c97a20, #4D33E520) !important;
+    font-weight: 700;
+    color: #4D33E5;
+}
+
+/* 통계 카드 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #4D33E5;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* 로딩 애니메이션 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #4D33E5 0%, #527e66 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.loading-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-animation {
+    width: 80px;
+    height: 80px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 2rem;
+}
+
+.loading-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* 처음으로 버튼 */
+.home-btn {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+/* 애니메이션 카운터 */
+.counter {
+    display: inline-block;
+}
+
+/* 차트 툴팁 */
+.chart-tooltip {
+    transition: opacity 0.2s ease;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .result-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .simple-chart {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 1rem;
+    }
+
+    .chart-bar {
+        width: 40px;
+        margin: 0.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .floating-logo {
+        width: clamp(60px, 8vw, 80px) !important;
+        height: clamp(60px, 8vw, 80px) !important;
+        bottom: 1rem !important;
+        left: 1rem !important;
+    }
+}
+
+/* 동동 떠있는 로고 */
+.floating-logo {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: clamp(80px, 10vw, 120px);
+    height: clamp(80px, 10vw, 120px);
+    z-index: 50;
+    animation: floatLogo 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.floating-logo:hover {
+    transform: scale(1.1);
+}
+
+.floating-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes floatLogo {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연금 계산 결과 - 나의 노후</title>
+    <link rel="stylesheet" href="css/result.css">
+</head>
+<body>
+    <!-- 로딩 화면 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-animation"></div>
+        <div class="loading-text">
+            당신의 미래를 계산하고 있어요...<br>
+            <small style="font-size: 1rem; opacity: 0.8;">잠시만 기다려주세요</small>
+        </div>
+    </div>
+
+    <!-- 처음으로 버튼 -->
+    <button class="home-btn" onclick="goHome()" title="처음으로 돌아가기">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+
+    <div class="container">
+        <!-- 로고 -->
+        <div class="floating-logo">
+            <img src="../images/ygss_logo.png" alt="YGSS Logo">
+        </div>
+
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>🎉 연금 예상 결과</h1>
+            <p class="subtitle"><span id="userName">홍길동</span>님의 맞춤형 연금 계획이 완성되었습니다</p>
+        </div>
+
+        <!-- 메인 결과 카드 -->
+        <div class="result-card">
+            <div class="result-main">
+                <div class="result-amount">
+                    <span class="currency">월</span>
+                    <span class="counter" id="monthlyAmount" data-target="127">0</span>
+                    <span class="currency">만원</span>
+                </div>
+                <div class="result-description">
+                    <span id="userName2">홍길동</span>님, 당신의 <span class="highlight">월 예상 연금 수령액은 <span id="monthlyAmount2">127</span>만원</span>입니다.<br>
+                    <span class="highlight">만 <span id="optimalAge">67</span>세부터 수령을 시작하면</span>,<br>
+                    예상 수명 <span class="highlight">만 <span id="lifeExpectancy">83</span>세</span> 기준으로 <span class="highlight">총 <span id="totalAmount">2억 4,384</span>만원</span>을 수령할 수 있습니다.
+                </div>
+
+                <div class="tip-card">
+                    <span class="icon">💡</span>
+                    <strong>참고로, 가장 유리한 수급 시기는 만 67세입니다.</strong><br>
+                    만 67세에 연금을 개시하면, 현재 설정한 수급 시기보다 총 <span style="font-weight: 800;">3,200만원 더</span> 받을 수 있습니다.
+                </div>
+
+                <button class="download-btn" onclick="downloadResult()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                    결과 다운로드
+                </button>
+            </div>
+        </div>
+
+        <!-- 통계 카드 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><span class="counter" data-target="67">0</span>세</div>
+                <div class="stat-label">최적 수급 시작 연령</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="counter" data-target="192">0</span>개월</div>
+                <div class="stat-label">예상 수령 기간</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="counter" data-target="24384">0</span>만원</div>
+                <div class="stat-label">총 예상 수령액</div>
+            </div>
+        </div>
+
+        <!-- 차트 1: 개시연령별 월 수령액 -->
+        <div class="result-card">
+            <div class="chart-title">📊 개시연령별 월 수령액 (만원)</div>
+            <div class="chart-container">
+                <div class="simple-chart" id="monthlyChart">
+                    <!-- JavaScript로 생성됩니다 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 차트 2: 개시연령별 총 수령액 -->
+        <div class="result-card">
+            <div class="chart-title">📈 개시연령별 총 수령액 (백만원)</div>
+            <div class="chart-container">
+                <div class="line-chart" id="totalChart">
+                    <svg viewBox="0 0 800 300">
+                        <!-- 그리드 라인 -->
+                        <defs>
+                            <pattern id="grid" width="80" height="30" patternUnits="userSpaceOnUse">
+                                <path d="M 80 0 L 0 0 0 30" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                        
+                        <!-- 데이터 라인 -->
+                        <polyline id="dataLine"
+                            fill="none" 
+                            stroke="#4D33E5" 
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                        
+                        <!-- 데이터 포인트 -->
+                        <g id="dataPoints"></g>
+                        
+                        <!-- X축 라벨 -->
+                        <g id="xLabels"></g>
+                        
+                        <!-- Y축 라벨 -->
+                        <g id="yLabels"></g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 시뮬레이션 테이블 -->
+        <div class="result-card">
+            <div class="chart-title">📋 수명에 따른 최적 수급 시기 시뮬레이션</div>
+            <div class="tip-card">
+                💬 <strong>건강관리를 꾸준히 한다면 수명은 더 길어질 수 있어요!</strong><br>
+                수명이 길어진다면, <strong>언제 연금을 받는 게 가장 유리할지</strong> 알아보세요.
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="simulation-table">
+                    <thead>
+                        <tr>
+                            <th>예상 수명</th>
+                            <th>최적 수급 시기</th>
+                            <th>총 수령액 (백만원)</th>
+                            <th>권장도</th>
+                        </tr>
+                    </thead>
+                    <tbody id="simulationTable">
+                        <!-- JavaScript로 생성됩니다 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/result.js"></script>
+</body>
+</html>

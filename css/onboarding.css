@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #4D33E5 0%, #6B4CE6 100%);
+    overflow: hidden;
+    height: 100vh;
+    color: #fff;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page.prev {
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+/* 3D 일러스트 배경 */
+.background-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    top: 10%;
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    right: 20%;
+    animation-delay: 1s;
+}
+
+.shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 10%;
+    animation-delay: 2s;
+}
+
+.shape:nth-child(4) {
+    width: 60px;
+    height: 60px;
+    bottom: 30%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+.shape:nth-child(5) {
+    width: 140px;
+    height: 140px;
+    top: 50%;
+    left: 5%;
+    animation-delay: 4s;
+}
+
+.shape:nth-child(6) {
+    width: 90px;
+    height: 90px;
+    top: 60%;
+    right: 8%;
+    animation-delay: 5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+.title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+.subtitle {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+.description {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 3rem auto;
+    opacity: 0.8;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+    animation-delay: 0.7s;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 버튼 스타일 */
+.start-button {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    color: #4D33E5;
+    border: none;
+    padding: 1.5rem 3rem;
+    border-radius: 50px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+    animation-delay: 0.9s;
+}
+
+.start-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.start-button:active {
+    transform: translateY(-2px);
+}
+
+/* 네비게이션 화살표 */
+.nav-arrow {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+    opacity: 0.7;
+}
+
+.nav-arrow:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.nav-arrow.up {
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-arrow.down {
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-arrow svg {
+    width: 32px;
+    height: 32px;
+    fill: white;
+}
+
+/* 진행률 표시 */
+.progress-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 100;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: white;
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+}
+
+/* 처음으로 버튼 */
+.home-button {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+    opacity: 0.8;
+}
+
+.home-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.home-button svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+}
+
+/* 푸터 */
+.footer {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    opacity: 0.4;
+    font-weight: 300;
+}
+
+/* 로딩 애니메이션 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #4D33E5 0%, #6B4CE6 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.loading-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* 특별한 페이지별 스타일 */
+.page-1 .title {
+    background: linear-gradient(135deg, #fff 0%, #e3f2fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-4 .subtitle {
+    color: #81c784;
+}
+
+.page-5 .title {
+    color: #ffd54f;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .page {
+        padding: 1rem;
+    }
+    
+    .progress-dots {
+        right: 1rem;
+    }
+    
+    .home-button {
+        right: 1rem;
+        bottom: 1rem;
+    }
+    
+    .nav-arrow {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .nav-arrow svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .floating-logo {
+        width: clamp(60px, 8vw, 80px) !important;
+        height: clamp(60px, 8vw, 80px) !important;
+        bottom: 1rem !important;
+        left: 1rem !important;
+    }
+}
+
+/* 동동 떠있는 로고 */
+.floating-logo {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: clamp(80px, 10vw, 120px);
+    height: clamp(80px, 10vw, 120px);
+    z-index: 50;
+    animation: floatLogo 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.floating-logo:hover {
+    transform: scale(1.1);
+}
+
+.floating-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes floatLogo {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}

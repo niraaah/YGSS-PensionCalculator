@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 노후 - 연금 계산기</title>
+    <link rel="stylesheet" href="css/onboarding.css">
+</head>
+<body>
+    <!-- 로딩 화면 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-text">나의 노후를 준비하는 중...</div>
+    </div>
+
+    <div class="container">
+        <!-- 배경 3D 효과 -->
+        <div class="background-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+
+        <!-- 로고 -->
+        <div class="floating-logo">
+            <img src="images/ygss_logo.png" alt="YGSS Logo">
+        </div>
+
+        <!-- 페이지 1: 메인 타이틀 -->
+        <div class="page page-1 active" data-page="0">
+            <h1 class="title">미래의 나는 연금을<br>얼마나 받을 수 있을까?</h1>
+            <h2 class="subtitle">나의 노후</h2>
+        </div>
+
+        <!-- 페이지 2: 설명 안내 -->
+        <div class="page page-2" data-page="1">
+            <h1 class="title">현재 나이와 건강, 직업, 자산 등을</h1>
+            <h2 class="subtitle">저에게 알려주시면</h2>
+        </div>
+
+        <!-- 페이지 3: 결과 안내 -->
+        <div class="page page-3" data-page="2">
+            <h1 class="title">연금 수급 시기에 따른</h1>
+            <h2 class="subtitle">연금 수령액을 알려드릴게요</h2>
+        </div>
+
+        <!-- 페이지 4: 연금 수령액 예측 -->
+        <div class="page page-4" data-page="3">
+            <h1 class="title">연금 수령액은</h1>
+            <h2 class="subtitle">수급 시점에 따라 달라집니다</h2>
+            <p class="description">
+                조기 수급하면 감액되고,<br>
+                늦게 수급하면 증액됩니다.<br>
+                최적의 타이밍을 찾아보세요!
+            </p>
+        </div>
+
+        <!-- 페이지 5: 시작 -->
+        <div class="page page-5" data-page="4">
+            <h1 class="title">나의 노후를 위한 첫 걸음</h1>
+            <h2 class="subtitle">시작해볼까요?</h2>
+            <button class="start-button" onclick="startCalculator()">좋아요!</button>
+        </div>
+
+        <!-- 네비게이션 화살표 -->
+        <button class="nav-arrow up" id="upArrow" onclick="previousPage()" style="display: none;">
+            <svg viewBox="0 0 24 24">
+                <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+            </svg>
+        </button>
+
+        <button class="nav-arrow down" id="downArrow" onclick="nextPage()" title="다음 페이지">
+            <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+        </button>
+
+        <!-- 진행률 표시 -->
+        <div class="progress-dots">
+            <div class="dot active" onclick="goToPage(0)"></div>
+            <div class="dot" onclick="goToPage(1)"></div>
+            <div class="dot" onclick="goToPage(2)"></div>
+            <div class="dot" onclick="goToPage(3)"></div>
+            <div class="dot" onclick="goToPage(4)"></div>
+        </div>
+
+        <!-- 처음으로 버튼 -->
+        <button class="home-button" onclick="goToPage(0)" style="display: none;" id="homeButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+        </button>
+
+        <!-- 푸터 -->
+        <div class="footer">Powered by 연금술사</div>
+    </div>
+
+    <script src="js/onboarding.js"></script>
+</body>
+</html>
