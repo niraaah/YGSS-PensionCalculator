@@ -67,7 +67,7 @@ function startCalculator() {
     
     setTimeout(() => {
         // 여기서 계산기 페이지로 이동
-        window.location.href = 'survey.html';
+        window.location.href = 'html/survey.html';
     }, 1000);
 }
 

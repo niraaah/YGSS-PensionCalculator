@@ -488,7 +488,7 @@ ${pensionData.lifeSimulation.map(d => `- 수명 ${d.life}세: ${d.optimal}세 �
 // 처음으로 이동
 function goHome() {
     if (confirm('처음 화면으로 돌아가시겠습니까?')) {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
     }
 }
 
